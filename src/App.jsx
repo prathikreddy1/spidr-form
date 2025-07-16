@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Particles from 'react-tsparticles';
+import { loadFull } from 'tsparticles';
 
 export default function App() {
   const [formData, setFormData] = useState({
@@ -20,11 +22,45 @@ export default function App() {
     console.log('Form submitted:', formData);
   };
 
+  const particlesInit = async (main) => {
+    await loadFull(main);
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#0f0f0f] to-[#1c1c1c] px-4">
+    <div className="relative min-h-screen flex items-center justify-center px-4 bg-black overflow-hidden">
+      {/* Particles Background */}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        className="absolute top-0 left-0 w-full h-full z-0"
+        options={{
+          fullScreen: false,
+          background: {
+            color: {
+              value: "#0f0f0f",
+            },
+          },
+          particles: {
+            number: { value: 40 },
+            size: { value: 3 },
+            move: {
+              enable: true,
+              speed: 1,
+            },
+            opacity: {
+              value: 0.3,
+            },
+            color: {
+              value: "#ffffff",
+            },
+          },
+        }}
+      />
+
+      {/* Form Box */}
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-xl bg-[#111] border border-purple-700 rounded-2xl shadow-xl shadow-purple-900/40 p-8 space-y-6"
+        className="relative z-10 w-full max-w-xl bg-[#111] border border-purple-700 rounded-2xl shadow-xl shadow-purple-900/40 p-8 space-y-6"
       >
         <h2 className="text-3xl font-bold text-center text-white tracking-wider">
           Spidr Interest Form 🕸️
@@ -35,7 +71,7 @@ export default function App() {
           { name: 'phone', placeholder: 'Phone Number' },
           { name: 'email', placeholder: 'Email Address', type: 'email' },
           { name: 'airFryerCost', placeholder: 'Guess Air Fryer Cost ($)', type: 'number' },
-          { name: 'spidrPin', placeholder: 'Spidr Pin' },
+          { name: 'spidrPin', placeholder: 'Spidr Pin (####-####-####-####)' },
         ].map(({ name, placeholder, type = 'text' }) => (
           <input
             key={name}
